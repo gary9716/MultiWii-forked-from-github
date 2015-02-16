@@ -698,11 +698,21 @@ void setup() {
     GPS_set_pids();
   #endif
   previousTime = micros();
-  #if defined(GIMBAL)
-   calibratingA = 512;
+
+  #ifdef DONT_DO_ANY_CALI_STARTUP
+    //dont do any calibration
+  #elif defined(DO_ALL_CALI_STARTUP)
+    calibratingA = 512;
+    calibratingG = 512;
+    calibratingB = 200;
+  #else
+    #if defined(GIMBAL)
+     calibratingA = 512;
+    #endif
+    calibratingG = 512;
+    calibratingB = 200;  // 10 seconds init_delay + 200 * 25 ms = 15 seconds before ground pressure settles
   #endif
-  calibratingG = 512;
-  calibratingB = 200;  // 10 seconds init_delay + 200 * 25 ms = 15 seconds before ground pressure settles
+
   #if defined(POWERMETER)
     for(uint8_t j=0; j<=PMOTOR_SUM; j++) pMeter[j]=0;
   #endif
@@ -983,10 +993,10 @@ void loop () {
             LCDclear();
           }
         #endif
-        #if ACC
+        #if ACC && RCSTICK_ACC_CALI
           else if (rcSticks == THR_HI + YAW_LO + PIT_LO + ROL_CE) calibratingA=512;     // throttle=max, yaw=left, pitch=min
         #endif
-        #if MAG
+        #if MAG && RCSTICK_MAG_CALI
           else if (rcSticks == THR_HI + YAW_HI + PIT_LO + ROL_CE) f.CALIBRATE_MAG = 1;  // throttle=max, yaw=right, pitch=min
         #endif
         i=0;
