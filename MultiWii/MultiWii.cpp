@@ -642,6 +642,7 @@ void setup() {
   POWERPIN_OFF;
   initOutput();
   readGlobalSet();
+
   #ifndef NO_FLASH_CHECK
     #if defined(MEGA)
       uint16_t i = 65000;                             // only first ~64K for mega board due to pgm_read_byte limitation
@@ -699,6 +700,15 @@ void setup() {
   #endif
   previousTime = micros();
 
+  //alexmos: init sonar
+  #if defined(SONAR)
+    initSonar();
+  #endif
+  
+  #if defined(OPTFLOW)
+    initOptflow();
+  #endif
+  
   #ifdef DONT_DO_ANY_CALI_STARTUP
     //dont do any calibration
   #elif defined(DO_ALL_CALI_STARTUP)
