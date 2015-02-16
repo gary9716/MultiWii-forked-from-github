@@ -1188,6 +1188,48 @@ Also note, that maqgnetic declination changes with time, so recheck your value e
         */
     //#define COPTERTEST 1
 
+/***** alexmos: Optical Flow sensor for position hold ********/
+/* Activated by 'GPSHOLD' checkbox (LEVEL mode must be enabled)
+  VEL(P, I) in GUI are used to PID tuning.
+
+Sensors currently supported: 
+  ADNS-5050
+    connect and define pins: OF_SCLK, OF_SDIO, OF_NCS
+
+  ADNS-3080 (not tested yet)
+    connect and define pins: OF_SCLK, OF_MISO, OF_MOSI, OF_NCS, OF_RESET (optional)
+
+  ... (if you implement other sensor, let me know)
+
+Due to software SPI,  you can use any of free Arduino pins
+*/
+//#define OPTFLOW 5050
+#define OF_SCLK PITCHPIN
+#define OF_SDIO YAWPIN
+#define OF_NCS  ROLLPIN
+
+/*
+#define OPTFLOW 3080
+#define OF_SCLK ??
+#define OF_MISO ??
+#define OF_MOSI ??
+#define OF_NCS  ??
+//#define OF_RESET ??
+*/
+
+/* Lense focal distance, mm (set it for your own lense) 
+ (How to check: debug4 in GUI should not react on ROLL tilt, but react on ROLL slide) */
+#define OF_FOCAL_DIST 9
+/* Deadband for ROLL,PITCH sticks where position hold is enabled. Max value 100 */
+#define OF_DEADBAND 15
+/* Rotate I-term with heading rotation. It will well compensate wind */
+#define OF_ROTATE_I
+/* Low-pass filter factor to prevent shaking. Possible values 1..8.  Default is 5. */
+#define OF_LPF_FACTOR 5
+/* Debug to GUI */
+//#define OF_DEBUG
+
+
 /*************************************************************************************************/
 /*****************                                                                 ***************/
 /****************  SECTION  8 - DEPRECATED                                                 *******/
@@ -1202,6 +1244,7 @@ Also note, that maqgnetic declination changes with time, so recheck your value e
   //#define D12_POWER      // Use D12 on PROMINI to power sensors. Will disable servo[4] on D12
   /* disable use of the POWER PIN (allready done if the option RCAUXPIN12 is selected) */
   #define DISABLE_POWER_PIN
+
 
 /*************************************************************************************************/
 /****           END OF CONFIGURABLE PARAMETERS                                                ****/

@@ -1234,6 +1234,12 @@ void loop () {
 
     #endif //GPS
 
+    // alexmos: using GPSHold checkbox for opticalFlow mode, because no special box in GUI
+    #if defined(OPTFLOW)
+      if (rcOptions[BOXGPSHOLD]) {optflowMode = 1;}
+      else optflowMode = 0;
+    #endif
+    
     #if defined(FIXEDWING) || defined(HELICOPTER)
       if (rcOptions[BOXPASSTHRU]) {f.PASSTHRU_MODE = 1;}
       else {f.PASSTHRU_MODE = 0;}
@@ -1266,7 +1272,7 @@ void loop () {
           #endif
         #endif
       case 4:
-        taskOrder=0;
+        taskOrder++;
         #if SONAR
           Sonar_update(); //debug[2] = sonarAlt;
         #endif
@@ -1276,6 +1282,15 @@ void loop () {
         #ifdef VARIOMETER
           if (f.VARIO_MODE) vario_signaling();
         #endif
+        break;
+      case 5:
+        taskOrder++; 
+        #ifdef OPTFLOW
+          Optflow_update();
+          break;
+        #endif
+      default:
+        taskOrder = 0;
         break;
     }
   }
@@ -1471,6 +1486,9 @@ void loop () {
     if ((f.ANGLE_MODE || f.HORIZON_MODE) && axis<2 ) { // MODE relying on ACC
       // calculate error and limit the angle to 50 degrees max inclination
       errorAngle = constrain((rcCommand[axis]<<1) + GPS_angle[axis],-500,+500) - att.angle[axis] + conf.angleTrim[axis]; //16 bits is ok here
+      #ifdef OPTFLOW
+        errorAngle-= optflow_angle[axis];
+      #endif
     }
     if (axis == 2) {//YAW is always gyro-controlled (MAG correction is applied to rcCommand)
       AngleRateTmp = (((int32_t) (conf.yawRate + 27) * rcCommand[2]) >> 5);
