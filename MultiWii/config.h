@@ -197,6 +197,13 @@
       //#define SRF10
       //#define SRF23
 
+      /* Generic sonar: hc-sr04, srf04, dyp-me007, all generic sonar with echo/pulse pin 
+         default pulse is PH6/12, echo is PB4/11
+      */
+      //#define SONAR_GENERIC_ECHOPULSE 
+      //#define SONAR_GENERIC_SCALE 58 //scale for ranging conversion (hcsr04 is 58)
+      //#define SONAR_GENERIC_MAX_RANGE 500 //cm (could be more)
+
       /* ADC accelerometer */ // for 5DOF from sparkfun, uses analog PIN A1/A2/A3
       //#define ADCACC
 
@@ -647,6 +654,17 @@ At this moment you can use this function only with WinGUI 2.3 release. MultiWiiC
     /* adopt the flasher pattern for landing light LEDs */
     //#define LANDING_LIGHTS_ADOPT_LED_FLASHER_PATTERN
 
+  /************************* Sonar alt hold / precision / ground collision keeper *******/
+  //#define SONAR_TILT_CORRECTION //correct ranging from quad inclinaison, may works or not, depends of beam shape, ultrasonic absorption, sensibility of environnement, etc...
+  //will not be applyed if hypo is longer than max range of course and no more than 30/40° correction
+      
+  #define SONAR_MAX_HOLD 400 //cm, kind of error delimiter, for now to avoid rocket climbing, only usefull if no baro
+
+  //if using baro + sonar       
+  #define SONAR_BARO_FUSION_LC 150 //cm, baro/sonar readings fusion, low cut, below = full sonar
+  #define SONAR_BARO_FUSION_HC 300 //cm, baro/sonar readings fusion, high cut, above = full baro
+  #define SONAR_BARO_FUSION_RATIO 0.0 //0.0-1.0,  baro/sonar readings fusion, amount of each sensor value, 0 = proportionnel between LC and HC
+
   /*************************    INFLIGHT ACC Calibration    *****************************/
     /* This will activate the ACC-Inflight calibration if unchecked */
     //#define INFLIGHT_ACC_CALIBRATION
@@ -704,6 +722,13 @@ At this moment you can use this function only with WinGUI 2.3 release. MultiWiiC
     /* all functionnalities allowed by SERIAL_GPS are now available for I2C_GPS: all relevant navigation computations are gathered in the main FC */
 
     //#define I2C_GPS
+
+    /* I2C GPS device made with an indeedent ATTiny[24]313 + GPS device and
+       optional sonar device.    https://github.com/wertarbyte/tiny-gps/ */
+    /* get GPS data from Tiny-GPS */
+    //#define TINY_GPS
+    /* get sonar data from Tiny-GPS */
+    //#define TINY_GPS_SONAR
 
     // If your I2C GPS board has Sonar support enabled
     //#define I2C_GPS_SONAR

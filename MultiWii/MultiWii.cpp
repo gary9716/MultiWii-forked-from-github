@@ -49,7 +49,7 @@ const char boxnames[] PROGMEM = // names for dynamic generation of config GUI
     "ANGLE;"
     "HORIZON;"
   #endif
-  #if BARO && (!defined(SUPPRESS_BARO_ALTHOLD))
+  #if (BARO||SONAR) && (!defined(SUPPRESS_BARO_ALTHOLD))
     "BARO;"
   #endif
   #ifdef VARIOMETER
@@ -104,7 +104,7 @@ const uint8_t boxids[] PROGMEM = {// permanent IDs associated to boxes. This way
     1, //"ANGLE;"
     2, //"HORIZON;"
   #endif
-  #if BARO && (!defined(SUPPRESS_BARO_ALTHOLD))
+  #if (BARO||SONAR) && (!defined(SUPPRESS_BARO_ALTHOLD))
     3, //"BARO;"
   #endif
   #ifdef VARIOMETER
@@ -699,15 +699,6 @@ void setup() {
     GPS_set_pids();
   #endif
   previousTime = micros();
-
-  //alexmos: init sonar
-  #if defined(SONAR)
-    initSonar();
-  #endif
-  
-  #if defined(OPTFLOW)
-    initOptflow();
-  #endif
   
   #ifdef DONT_DO_ANY_CALI_STARTUP
     //dont do any calibration
@@ -1094,7 +1085,7 @@ void loop () {
       if (f.ANGLE_MODE || f.HORIZON_MODE) {STABLEPIN_ON;} else {STABLEPIN_OFF;}
     #endif
 
-    #if BARO
+    #if (BARO||SONAR)
       #if (!defined(SUPPRESS_BARO_ALTHOLD))
         #if GPS 
         if (GPS_conf.takeover_baro) rcOptions[BOXBARO] = (rcOptions[BOXBARO] || f.GPS_BARO_MODE);
@@ -1270,7 +1261,7 @@ void loop () {
         #endif
       case 2:
         taskOrder++;
-        #if BARO
+        #if BARO || SONAR
           if (getEstimatedAltitude() != 0) break; // 280 us
         #endif    
       case 3:
@@ -1285,6 +1276,9 @@ void loop () {
         taskOrder++;
         #if SONAR
           Sonar_update(); //debug[2] = sonarAlt;
+          #if defined(SONAR_TILT_CORRECTION)
+            Sonar_tilting_correction();
+          #endif
         #endif
         #ifdef LANDING_LIGHTS_DDR
           auto_switch_landing_lights();
@@ -1356,7 +1350,7 @@ void loop () {
     if (f.SMALL_ANGLES_25 || (f.GPS_mode != 0)) rcCommand[YAW] -= dif*conf.pid[PIDMAG].P8 >> 5;  //Always correct maghold in GPS mode
   } else magHold = att.heading;
 
-  #if BARO && (!defined(SUPPRESS_BARO_ALTHOLD))
+  #if (BARO||SONAR) && (!defined(SUPPRESS_BARO_ALTHOLD))
   /* Smooth alt change routine , for slow auto and aerophoto modes (in general solution from alexmos). It's slowly increase/decrease 
   * altitude proportional to stick movement (+/-100 throttle gives about +/-50 cm in 1 second with cycle time about 3-4ms)
   */

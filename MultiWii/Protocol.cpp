@@ -397,7 +397,7 @@ void evaluateCommand(uint8_t c) {
         if(f.ANGLE_MODE)   tmp |= 1<<BOXANGLE;
         if(f.HORIZON_MODE) tmp |= 1<<BOXHORIZON;
       #endif
-      #if BARO && (!defined(SUPPRESS_BARO_ALTHOLD))
+      #if (BARO||SONAR) && (!defined(SUPPRESS_BARO_ALTHOLD))
         if(f.BARO_MODE) tmp |= 1<<BOXBARO;
       #endif
       if(f.MAG_MODE) tmp |= 1<<BOXMAG;

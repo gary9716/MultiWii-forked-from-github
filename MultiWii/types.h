@@ -36,7 +36,7 @@ enum box {
     BOXANGLE,
     BOXHORIZON,
   #endif
-  #if BARO && (!defined(SUPPRESS_BARO_ALTHOLD))
+  #if (BARO||SONAR) && (!defined(SUPPRESS_BARO_ALTHOLD))
     BOXBARO,
   #endif
   #ifdef VARIOMETER
