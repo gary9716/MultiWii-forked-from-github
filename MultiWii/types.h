@@ -1,6 +1,8 @@
 #ifndef TYPES_H_
 #define TYPES_H_
 
+#include "config.h"
+
 enum rc {
   ROLL,
   PITCH,
@@ -53,9 +55,12 @@ enum box {
   #if defined(CAMTRIG)
     BOXCAMTRIG,
   #endif
-  #if GPS || defined(OPTFLOW)
-    BOXGPSHOME,
+  #if GPS
     BOXGPSHOLD,
+    BOXGPSHOME,
+  #endif
+  #if defined(OPTFLOW)
+    BOXOPTFLOWHOLD,
   #endif
   #if defined(FIXEDWING) || defined(HELICOPTER)
     BOXPASSTHRU,

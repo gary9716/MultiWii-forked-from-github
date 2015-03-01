@@ -71,6 +71,9 @@ const char boxnames[] PROGMEM = // names for dynamic generation of config GUI
   "GPS HOME;"
   "GPS HOLD;"
 #endif
+#if defined(OPTFLOW)
+  "OPT HOLD;"
+#endif
 #if defined(FIXEDWING) || defined(HELICOPTER)
   "PASSTHRU;"
 #endif
@@ -151,6 +154,9 @@ const uint8_t boxids[] PROGMEM = {// permanent IDs associated to boxes. This way
 #if GPS
   20, //"MISSION;"
   21, //"LAND;"
+#endif
+#if defined(OPTFLOW)
+  22 //"OPT HOLD;"
 #endif
   };
 
@@ -1238,7 +1244,7 @@ void loop () {
 
     // alexmos: using GPSHold checkbox for opticalFlow mode, because no special box in GUI
     #if defined(OPTFLOW)
-      if (rcOptions[BOXGPSHOLD]) {optflowMode = 1;}
+      if (rcOptions[BOXOPTFLOWHOLD]) {optflowMode = 1;}
       else optflowMode = 0;
     #endif
     
