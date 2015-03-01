@@ -25,6 +25,7 @@ November  2013     V2.3
 #include "Serial.h"
 #include "GPS.h"
 #include "Protocol.h"
+#include "OpticalFlow.h"
 
 #include <avr/pgmspace.h>
 

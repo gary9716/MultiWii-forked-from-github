@@ -1,10 +1,17 @@
+#ifndef OPTICALFLOW_H
+#define OPTICALFLOW_H
+
+#include "Arduino.h"
+#include "config.h"
+
 #ifdef OPTFLOW
 
-/* Optical Flow mode flag */
-static int8_t optflowMode = 0;
+extern int8_t optflowMode;
+extern int16_t optflow_angle[2];
 
-/* Angles of correction */
-static int16_t optflow_angle[2] = { 0, 0 };
+void Optflow_update();
+void initOptflow();
 
+#endif
 
 #endif

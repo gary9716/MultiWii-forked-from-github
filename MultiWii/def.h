@@ -1633,11 +1633,11 @@
 #endif
 
 #if defined(SONAR_GENERIC_ECHOPULSE)
-  #define SONAR_GEP_TriggerPin             12
+  #define SONAR_GEP_TriggerPin             9
   #define SONAR_GEP_TriggerPin_PINMODE_OUT pinMode(SONAR_GEP_TriggerPin,OUTPUT);
   #define SONAR_GEP_TriggerPin_PIN_HIGH    PORTB |= 1<<6;
   #define SONAR_GEP_TriggerPin_PIN_LOW     PORTB &= ~(1<<6);
-  #define SONAR_GEP_EchoPin                11
+  #define SONAR_GEP_EchoPin                10
   #define SONAR_GEP_EchoPin_PINMODE_IN     pinMode(SONAR_GEP_EchoPin,INPUT);
   #define SONAR_GEP_EchoPin_PCINT          PCINT5
   #define SONAR_GEP_EchoPin_PCICR          PCICR |= (1<<PCIE0); // PCINT 0-7 belong to PCIE0
@@ -2006,6 +2006,18 @@
     defined( ITG3200_LPF_256HZ) || defined( ITG3200_LPF_188HZ) || defined( ITG3200_LPF_98HZ) || defined( ITG3200_LPF_42HZ) || \
     defined( ITG3200_LPF_20HZ)  || defined( ITG3200_LPF_10HZ)
   #error "you use one feature that is no longer supported or has undergone a name change"
+#endif
+
+#if OPTFLOW == 3080
+  #define OF_SCLK 52
+  #define OF_MISO 50
+  #define OF_MOSI 51
+  #define OF_NCS  12
+  #define OF_RESET 11
+#elif OPTFLOW == 5050
+  #define OF_SCLK PITCHPIN
+  #define OF_SDIO YAWPIN
+  #define OF_NCS  ROLLPIN
 #endif
 
 #endif /* DEF_H_ */

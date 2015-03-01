@@ -8,6 +8,7 @@
 #include "IMU.h"
 #include "LCD.h"
 #include "Sensors.h"
+#include "OpticalFlow.h"
 
 static void Device_Mag_getADC();
 static void Baro_init();

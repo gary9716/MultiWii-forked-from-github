@@ -176,6 +176,25 @@ int32_t  __attribute__ ((noinline)) mul(int16_t a, int16_t b) {
   return r;
 }
 
+/* Rotate vector V(x,y) to angle delta (in 0.1 degree) using small angle approximation and integers. */
+/* (Not precise but fast) */
+void rotate16(int16_t *V, int16_t delta) {
+  int16_t tmp = V[0];
+  V[0]-= (int16_t)( ((int32_t)delta) * V[1] / 573);
+  V[1]+= (int16_t)( ((int32_t)delta) * tmp / 573); 
+}
+
+/* n=(1..16) */
+void average16(struct avg_var16 *avg, int16_t cur, int8_t n) {
+  avg->buf+= cur - avg->res;
+  avg->res = avg->buf >> n;
+}
+/* n=(1..8) */
+void average8(struct avg_var8 *avg, int8_t cur, int8_t n) {
+  avg->buf+= cur - avg->res;
+  avg->res = avg->buf >> n;
+}
+
 // Rotate Estimated vector(s) with small angle approximation, according to the gyro data
 void rotateV32( t_int32_t_vector *v,int16_t* delta) {
   int16_t X = v->V16.X;

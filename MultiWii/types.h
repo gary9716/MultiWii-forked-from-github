@@ -53,7 +53,7 @@ enum box {
   #if defined(CAMTRIG)
     BOXCAMTRIG,
   #endif
-  #if GPS
+  #if GPS || defined(OPTFLOW)
     BOXGPSHOME,
     BOXGPSHOLD,
   #endif

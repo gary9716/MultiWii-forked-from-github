@@ -200,9 +200,9 @@
       /* Generic sonar: hc-sr04, srf04, dyp-me007, all generic sonar with echo/pulse pin 
          default pulse is PH6/12, echo is PB4/11
       */
-      //#define SONAR_GENERIC_ECHOPULSE 
-      //#define SONAR_GENERIC_SCALE 58 //scale for ranging conversion (hcsr04 is 58)
-      //#define SONAR_GENERIC_MAX_RANGE 500 //cm (could be more)
+      #define SONAR_GENERIC_ECHOPULSE 
+      #define SONAR_GENERIC_SCALE 58 //scale for ranging conversion (hcsr04 is 58)
+      #define SONAR_GENERIC_MAX_RANGE 400 //cm (could be more) (hcsr04 is 400)
 
       /* ADC accelerometer */ // for 5DOF from sparkfun, uses analog PIN A1/A2/A3
       //#define ADCACC
@@ -1228,23 +1228,14 @@ Sensors currently supported:
 
 Due to software SPI,  you can use any of free Arduino pins
 */
-//#define OPTFLOW 5050
-#define OF_SCLK PITCHPIN
-#define OF_SDIO YAWPIN
-#define OF_NCS  ROLLPIN
 
-/*
+//pin assignment please refer to def.h
+//#define OPTFLOW 5050
 #define OPTFLOW 3080
-#define OF_SCLK ??
-#define OF_MISO ??
-#define OF_MOSI ??
-#define OF_NCS  ??
-//#define OF_RESET ??
-*/
 
 /* Lense focal distance, mm (set it for your own lense) 
  (How to check: debug4 in GUI should not react on ROLL tilt, but react on ROLL slide) */
-#define OF_FOCAL_DIST 9
+#define OF_FOCAL_DIST ((float)4.2)
 /* Deadband for ROLL,PITCH sticks where position hold is enabled. Max value 100 */
 #define OF_DEADBAND 15
 /* Rotate I-term with heading rotation. It will well compensate wind */
